@@ -7,10 +7,13 @@
 --         release_ot_flag, release_if_flag
 -- ============================================
 
+
 WITH fact_release_ot_flag_per_order_line AS (
     SELECT
-        o.order_id, o.order_line_id,
-        o.channel,o.dc_id,
+        o.order_id,
+        o.order_line_id,
+        o.channel,
+        o.dc_id,
         CASE WHEN date(re.release_ts) <= o.release_SLA_date THEN 1 ELSE 0
         END AS release_ot_flag_per_order_line
     FROM fact_order_line AS o
@@ -20,8 +23,10 @@ WITH fact_release_ot_flag_per_order_line AS (
 ),
 fact_release_if_flag_per_order_line AS (
     SELECT
-        o.order_id, o.order_line_id,
-        o.dc_id, o.channel,
+        o.order_id,
+        o.order_line_id,
+        o.dc_id,
+        o.channel,
         CASE WHEN re.release_qty = o.ordered_qty THEN 1 ELSE 0
         END AS release_if_flag_per_order_line
     FROM fact_order_line AS o
@@ -30,7 +35,9 @@ fact_release_if_flag_per_order_line AS (
         AND o.order_line_id = re.order_line_id
 )
 SELECT
-    ot.order_id, ot.dc_id, ot.channel,
+    ot.order_id,
+    ot.dc_id,
+    ot.channel,
     MIN(ot.release_ot_flag_per_order_line) AS release_ot_flag,
     MIN(rif.release_if_flag_per_order_line) AS release_if_flag
 FROM fact_release_ot_flag_per_order_line AS ot
@@ -39,4 +46,6 @@ INNER JOIN fact_release_if_flag_per_order_line AS rif
     AND ot.dc_id = rif.dc_id
     AND ot.channel = rif.channel
 GROUP BY
-    ot.order_id, ot.dc_id, ot.channel;
+    ot.order_id,
+    ot.dc_id,
+    ot.channel;

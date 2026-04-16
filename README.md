@@ -186,6 +186,8 @@ operations themselves.
 ---
 
 ## Repository Structure
+
+```
 supply-chain-kpi-analytics/
 │
 ├── README.md
@@ -201,8 +203,9 @@ supply-chain-kpi-analytics/
 │       ├── lead_time.sql
 │       └── kpi_fact_table.sql
 └── python/
-└── data_gen/
-└── generate_mock_data.py
+    └── data_gen/
+        └── generate_mock_data.py
+```
 
 ---
 

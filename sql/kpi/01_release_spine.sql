@@ -7,7 +7,6 @@
 --         release_ot_flag, release_if_flag
 -- ============================================
 
-
 WITH fact_release_ot_flag_per_order_line AS (
     SELECT
         o.order_id,

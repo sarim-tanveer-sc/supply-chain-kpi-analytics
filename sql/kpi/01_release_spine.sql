@@ -1,6 +1,6 @@
 -- ============================================
 -- NCG Supply Chain KPI Analytics
--- Stage 10 | Step 1 of 7: Release Spine
+-- Phase 5 | Step 1 of 7: Release Spine
 -- Grain: Order level
 -- Dependencies: fact_order_line, fact_release_event
 -- Output: order_id, dc_id, channel, 

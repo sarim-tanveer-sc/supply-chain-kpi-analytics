@@ -165,4 +165,77 @@ shipment, and delivery stages.
 ## Skills Demonstrated
 
 - Operational data modeling
-- KPI framewor
+- KPI framework
+- Grain-aware analytics
+- Event-based process modeling
+- SQL-based diagnostic analysis
+- Data integrity validation
+- Realistic scenario simulation with controlled failure injection
+
+## Why This Project Matters
+
+This project demonstrates the ability to translate a real business problem into 
+a structured analytical model — separating execution layers, designing KPI logic 
+with correct grain and failure propagation, and producing diagnostic insight 
+beyond surface-level dashboarding.
+
+It simulates the type of analytical responsibility expected from a Supply Chain 
+Analyst embedded within operations — owning performance visibility, not 
+operations themselves.
+
+---
+
+## Repository Structure
+supply-chain-kpi-analytics/
+│
+├── README.md
+├── sql/
+│   ├── ddl/
+│   │   └── create_tables.sql
+│   └── kpi/
+│       ├── release_spine.sql
+│       ├── delivery_spine.sql
+│       ├── shipment_spine.sql
+│       ├── otif_derivation.sql
+│       ├── cost_to_revenue.sql
+│       ├── lead_time.sql
+│       └── kpi_fact_table.sql
+└── python/
+└── data_gen/
+└── generate_mock_data.py
+
+---
+
+## Status
+
+Phase 5 — KPI SQL Logic is nearing completion. All three execution spines 
+(release, delivery, shipment) have been built and validated. OTIF derivation 
+is complete. Cost to Revenue and Lead Time spines are validated. KPI Fact Table 
+build is in progress.
+
+Phase 6 (Python diagnostic analysis) and Phase 7 (Power BI dashboard) to follow.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

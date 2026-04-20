@@ -81,7 +81,7 @@ builds that visibility framework.
 | Phase 2 | KPI Framework & Definition | ✅ Complete |
 | Phase 3 | Data Architecture | ✅ Complete |
 | Phase 4 | Data Generation | ✅ Complete |
-| Phase 5 | KPI SQL Logic | 🟡 In Progress |
+| Phase 5 | KPI SQL Logic | ✅ Complete |
 | Phase 6 | Diagnostic Analysis | 🔲 Not Started |
 | Phase 7 | Executive Reporting | 🔲 Not Started |
 

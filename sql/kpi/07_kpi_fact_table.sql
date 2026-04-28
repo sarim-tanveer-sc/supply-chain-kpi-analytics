@@ -278,3 +278,108 @@ fact_log_cost_rev AS (
         week_num,
         SUM(freight_cost_orderline) AS freight_cost_order,
         SUM(unit_price * shipped_qty_orderline) AS revenue_order,
+        ROUND(
+            (SUM(freight_cost_orderline) / SUM(unit_price * shipped_qty_orderline)) * 100.00,
+            2
+        ) AS logistics_cost_rev_pct
+    FROM fact_ship_rev_orderline
+    GROUP BY
+        order_id,
+        dc_id,
+        channel,
+        week_num
+),
+fact_delivery_notnull AS (
+    SELECT
+        shipment_id,
+        delivered_ts
+    FROM fact_delivery_event
+    WHERE delivered_ts IS NOT NULL
+),
+fact_ship_del_shipment AS (
+    SELECT
+        sh.shipment_id,
+        sh.shipment_line_id,
+        sh.order_id,
+        sh.order_line_id,
+        de.delivered_ts
+    FROM fact_shipment_line AS sh
+    INNER JOIN fact_delivery_notnull AS de
+        ON sh.shipment_id = de.shipment_id
+),
+fact_ship_del_orderline AS (
+    SELECT
+        order_id,
+        order_line_id,
+        MAX(delivered_ts) AS delivered_dt
+    FROM fact_ship_del_shipment
+    GROUP BY
+        order_id,
+        order_line_id
+),
+fact_order_del_dt AS (
+    SELECT
+        o.order_id,
+        o.order_line_id,
+        o.dc_id,
+        o.channel,
+        strftime('%W', o.order_created_ts) AS week_num,
+        o.order_confirmed_ts,
+        de.delivered_dt
+    FROM fact_order_line AS o
+    INNER JOIN fact_ship_del_orderline AS de
+        ON o.order_id = de.order_id
+        AND o.order_line_id = de.order_line_id
+),
+fact_lead_time AS (
+    SELECT
+        order_id,
+        dc_id,
+        channel,
+        week_num,
+        julianday(MAX(date(delivered_dt))) - julianday(date(order_confirmed_ts)) AS lead_time
+    FROM fact_order_del_dt
+    GROUP BY
+        order_id,
+        dc_id,
+        channel,
+        week_num
+),
+fact_cost_rev_leadt_join AS (
+    SELECT
+        c.order_id,
+        c.logistics_cost_rev_pct,
+        l.lead_time AS lead_time_days
+    FROM fact_log_cost_rev AS c
+    LEFT JOIN fact_lead_time AS l
+        ON c.order_id = l.order_id
+)
+SELECT
+    k.order_id,
+    k.dc_id,
+    k.channel,
+    k.order_confirmed_dt,
+    k.week_num,
+    k.release_ot_flag,
+    k.release_if_flag,
+    k.shipped_ot_flag,
+    k.shipped_if_flag,
+    k.delivered_ot_flag,
+    k.delivered_if_flag,
+    MIN(
+        COALESCE(k.release_if_flag, 0),
+        COALESCE(k.shipped_if_flag, 0),
+        COALESCE(k.delivered_ot_flag, 0),
+        COALESCE(k.delivered_if_flag, 0)
+    ) AS otif_flag,
+    cl.logistics_cost_rev_pct,
+    cl.lead_time_days
+FROM fact_tier2_kpi_flag AS k
+LEFT JOIN fact_cost_rev_leadt_join AS cl
+    ON k.order_id = cl.order_id
+GROUP BY
+    k.order_id,
+    k.dc_id,
+    k.channel,
+    k.order_confirmed_dt,
+    k.week_num;

@@ -82,7 +82,7 @@ builds that visibility framework.
 | Phase 3 | Data Architecture | ✅ Complete |
 | Phase 4 | Data Generation | ✅ Complete |
 | Phase 5 | KPI SQL Logic | ✅ Complete |
-| Phase 6 | Diagnostic Analysis | 🔲 Not Started |
+| Phase 6 | Diagnostic Analysis | 🔲 In Progress |
 | Phase 7 | Executive Reporting | 🔲 Not Started |
 
 ---
@@ -211,12 +211,9 @@ supply-chain-kpi-analytics/
 
 ## Status
 
-Phase 5 — KPI SQL Logic is nearing completion. All three execution spines 
-(release, delivery, shipment) have been built and validated. OTIF derivation 
-is complete. Cost to Revenue and Lead Time spines are validated. KPI Fact Table 
-build is in progress.
+Phase 5 — completed
 
-Phase 6 (Python diagnostic analysis) and Phase 7 (Power BI dashboard) to follow.
+Phase 6 (Python diagnostic analysis) - in progress
 
 
 

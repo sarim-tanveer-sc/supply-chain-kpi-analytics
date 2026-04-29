@@ -45,6 +45,4 @@ INNER JOIN fact_release_if_flag_per_order_line AS rif
     AND ot.dc_id = rif.dc_id
     AND ot.channel = rif.channel
 GROUP BY
-    ot.order_id,
-    ot.dc_id,
-    ot.channel;
+    ot.order_id,ot.dc_id,ot.channel;
